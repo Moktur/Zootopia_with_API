@@ -43,40 +43,33 @@ def serialize_animal(a_name, a_diet, a_location, a_type):
     return animal_info
 
 
+def write_html(animals_info):
+    with open("animals_template.html", "r", encoding="utf-8") as at:
+        template = at.read()
+    
+    html_content = template.replace("__REPLACE_ANIMALS_INFO__", animals_info)
+    
+    with open("animals_output.html", "w", encoding="utf-8") as at:
+        at.write(html_content)
+
+
+
 def main():
 
-  name = input("What animal are you searching for? ")
-  api_url = 'https://api.api-ninjas.com/v1/animals?name={}'.format(name)
-  response = requests.get(api_url, headers={'X-Api-Key': 'j8gaPNl1DUxHIF/Yg5cRzQ==14bN2SROUuBYDzQN'})
-  if response.status_code == requests.codes.ok:
-    animals_data = response.json()
-    # print(animals_data)
-    animal_data_to_html(animals_data)
-    htmlfile = ""
-    with open("animals_template.html", "r", encoding="utf-8") as at:
-        template = at.read()
-        htmlfile = template.replace(
-            "__REPLACE_ANIMALS_INFO__",
-            animal_data_to_html(animals_data)
-        )
-    with open("animals_template.html", "w", encoding="utf-8") as at:
-        at.write(htmlfile)
-  else:
-    print("Error:", response.status_code, response.text)
-
-
-    animals_data = load_data('animals_data.json')
-    # print(animals_data)
-    animal_data_to_html(animals_data)
-    htmlfile = ""
-    with open("animals_template.html", "r", encoding="utf-8") as at:
-        template = at.read()
-        htmlfile = template.replace(
-            "__REPLACE_ANIMALS_INFO__",
-            animal_data_to_html(animals_data)
-        )
-    with open("animals_template.html", "w", encoding="utf-8") as at:
-        at.write(htmlfile)
+    name = input("What animal are you searching for? ")
+    api_url = 'https://api.api-ninjas.com/v1/animals?name={}'.format(name)
+    response = requests.get(api_url, headers={'X-Api-Key': 'j8gaPNl1DUxHIF/Yg5cRzQ==14bN2SROUuBYDzQN'})
+    if response.status_code == requests.codes.ok:
+        animals_data = response.json()
+        if not animals_data:
+            animals_info = f'<div class="error-message">{name} wasn\'t found in the database 🚽</div>'
+        else:
+            animals_info = animal_data_to_html(animals_data)
+    else:
+        animals_info = f"Error: {response.status_code} - {response.text}"
+    
+    write_html(animals_info)
+    print("HTML file generated successfully!")
 
 
 if __name__ == '__main__':
