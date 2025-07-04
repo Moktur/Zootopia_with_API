@@ -45,7 +45,7 @@ def serialize_animal(a_name, a_diet, a_location, a_type):
 
 def main():
 
-  name = 'fox'
+  name = input("What animal are you searching for? ")
   api_url = 'https://api.api-ninjas.com/v1/animals?name={}'.format(name)
   response = requests.get(api_url, headers={'X-Api-Key': 'j8gaPNl1DUxHIF/Yg5cRzQ==14bN2SROUuBYDzQN'})
   if response.status_code == requests.codes.ok:
