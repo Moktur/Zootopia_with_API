@@ -1,4 +1,5 @@
 import json
+import requests
 
 
 def load_data(file_path):
@@ -43,6 +44,27 @@ def serialize_animal(a_name, a_diet, a_location, a_type):
 
 
 def main():
+
+  name = 'fox'
+  api_url = 'https://api.api-ninjas.com/v1/animals?name={}'.format(name)
+  response = requests.get(api_url, headers={'X-Api-Key': 'j8gaPNl1DUxHIF/Yg5cRzQ==14bN2SROUuBYDzQN'})
+  if response.status_code == requests.codes.ok:
+    animals_data = response.json()
+    # print(animals_data)
+    animal_data_to_html(animals_data)
+    htmlfile = ""
+    with open("animals_template.html", "r", encoding="utf-8") as at:
+        template = at.read()
+        htmlfile = template.replace(
+            "__REPLACE_ANIMALS_INFO__",
+            animal_data_to_html(animals_data)
+        )
+    with open("animals_template.html", "w", encoding="utf-8") as at:
+        at.write(htmlfile)
+  else:
+    print("Error:", response.status_code, response.text)
+
+
     animals_data = load_data('animals_data.json')
     # print(animals_data)
     animal_data_to_html(animals_data)
