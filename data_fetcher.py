@@ -1,7 +1,5 @@
 import requests
 
-API_KEY = 'j8gaPNl1DUxHIF/Yg5cRzQ==14bN2SROUuBYDzQN'
-
 def fetch_data(animal_name):
   """
   Fetches animal data from API.
