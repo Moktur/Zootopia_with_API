@@ -16,7 +16,6 @@ def animal_data_to_html(animals_json_load):
     animal_info = ""
     for animal in animals_json_load:
         a_name, a_diet, a_location, a_type = extract_json_data(animal)
-        # if a_name and a_diet and a_location and a_type:
         animal_info += serialize_animal(a_name, a_diet, a_location, a_type)
     return animal_info
 
